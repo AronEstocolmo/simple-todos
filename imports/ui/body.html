@@ -1,0 +1,42 @@
+<body>
+  {{> loginButtons}} 
+  <div class="container">
+    <header>
+      <h1>Todo List ({{incompleteCount}})</h1>
+
+      <label class="hide-completed">
+        <input type="checkbox" />
+        Hide Completed Tasks
+      </label>
+
+      <label class="hide-completed">
+        <select name="cars">
+          <option value="volvo">List One</option>
+          <option value="saab">List Two</option>
+          <option value="fiat">List Three</option>
+          <option value="audi">List Four</option>
+        </select>
+      </label>
+
+      {{#if currentUser}}
+        <form class="new-task">
+          <input type="text" name="text" placeholder="Type to add new tasks" />
+        </form>
+      {{/if}}
+
+    </header>
+ 
+    <ul>
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
+  
+  <div>
+    {{> listOptions}}
+  </div>
+
+
+</body>
+ 
