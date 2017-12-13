@@ -7,6 +7,7 @@ import { Tasks } from '../api/tasks.js';
 import './task.js'; 
 import './body.html';
 import './listOptions.js';
+import './list.js';
 
 Template.body.onCreated(function bodyOnCreated() {
   this.state = new ReactiveDict();
@@ -37,9 +38,13 @@ Template.body.events({
     // Get value from form element
     const target = event.target;
     const text = target.text.value;
+    const listName = target.listName.value;
+
+    console.log("Yal");
+    console.log(listName);
  
     // Insert a task into the collection
-        Meteor.call('tasks.insert', text);
+        Meteor.call('tasks.insert', text, listName);
  
     // Clear form
     target.text.value = '';

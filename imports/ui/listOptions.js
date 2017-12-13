@@ -13,4 +13,9 @@ Template.listOptions.events({
     console.log("Ready to cleeeeear :D !");
     Meteor.call('tasks.removeAll');
   },
+
+  'input .select-list'() {
+    console.log("Boselectah!");
+    Meteor.call('tasks.selecta');
+  },
 });

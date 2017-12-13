@@ -2,6 +2,12 @@
   {{> loginButtons}} 
   <div class="container">
     <header>
+      <div>
+        {{> listOptions}}
+      </div>
+
+      <div><button class="deleteList">Delete List &times;</button></div>
+
       <h1>Todo List ({{incompleteCount}})</h1>
 
       <label class="hide-completed">
@@ -9,34 +15,31 @@
         Hide Completed Tasks
       </label>
 
-      <label class="hide-completed">
-        <select name="cars">
-          <option value="volvo">List One</option>
-          <option value="saab">List Two</option>
-          <option value="fiat">List Three</option>
-          <option value="audi">List Four</option>
-        </select>
-      </label>
-
       {{#if currentUser}}
         <form class="new-task">
+          <select name="listName">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+          </select>
           <input type="text" name="text" placeholder="Type to add new tasks" />
         </form>
       {{/if}}
 
     </header>
- 
-    <ul>
+
+   <ul>
       {{#each tasks}}
         {{> task}}
       {{/each}}
     </ul>
-  </div>
-  
-  <div>
-    {{> listOptions}}
+
   </div>
 
+
+ 
+  
 
 </body>
  

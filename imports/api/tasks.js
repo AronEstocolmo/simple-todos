@@ -6,7 +6,7 @@ export const Tasks = new Mongo.Collection('tasks');
 
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('tasks', function tasksPublication() {
+  Meteor.publish('tasks', function tasksPublication() {  //Make sure that every dokument with the correct listID is published.)
     return Tasks.find({
       $or: [
         { private: { $ne: true } },
@@ -17,8 +17,11 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'tasks.insert'(text) {
+  'tasks.insert'(text, listName) {
     check(text, String);
+
+    console.log(listName);
+    console.log(text);
  
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
@@ -30,7 +33,11 @@ Meteor.methods({
       createdAt: new Date(),
       owner: Meteor.userId(),
       username: Meteor.user().username,
+      listID: listName, //Add name of list? <-------------------------------------
     });
+
+    console.log(Tasks.find({}));
+
   },
   'tasks.remove'(taskId) {
     check(taskId, String);
@@ -69,10 +76,27 @@ Meteor.methods({
     Tasks.update(taskId, { $set: { private: setToPrivate } });
   },
 
-  //Remove all tasks
+  //Remove all tasks from list
   'tasks.removeAll'(){
     console.log("Uyuyuyyyy!");
     Tasks.remove({});
   },
+
+
+  'tasks.selecta'(){
+    Meteor.publish('tasks', function tasksPublication() {
+    return Tasks.find({
+      $or: [
+        { private: { $ne: true } },
+        { owner: this.userId },
+        { listID: this.listID },
+      ],
+    });
+  });
+  },
+
+
+
+
 
 });
