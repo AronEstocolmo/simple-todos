@@ -4,9 +4,27 @@ import { check } from 'meteor/check';
  
 export const Tasks = new Mongo.Collection('tasks');
 
+
 if (Meteor.isServer) {
   // This code only runs on the server
-  Meteor.publish('tasks', function tasksPublication() {  //Make sure that every dokument with the correct listID is published.)
+
+  Meteor.publish('tasks', function tasksPublication() {  //Make sure that every dokument with the correct listID is published
+    //listID = "volvo" //window.listID;
+    //console.log("HEYAHEYAHEYAHEYAAA!");
+    return Tasks.find({
+      $and: [
+        { private: { $ne: true } },
+        { owner: this.userId },
+        { rightList: { $ne: false } },
+        //{ listID: listID },
+      ],
+    });
+  });
+}
+
+
+/*
+  Meteor.publish('tasks', function tasksPublication() {  
     return Tasks.find({
       $or: [
         { private: { $ne: true } },
@@ -15,6 +33,8 @@ if (Meteor.isServer) {
     });
   });
 }
+*/
+
 
 Meteor.methods({
   'tasks.insert'(text, listName) {
@@ -34,6 +54,7 @@ Meteor.methods({
       owner: Meteor.userId(),
       username: Meteor.user().username,
       listID: listName, //Add name of list? <-------------------------------------
+      listish: "", //Use to force update in selecta
     });
 
     console.log(Tasks.find({}));
@@ -72,7 +93,6 @@ Meteor.methods({
     if (task.owner !== Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
     }
- 
     Tasks.update(taskId, { $set: { private: setToPrivate } });
   },
 
@@ -82,21 +102,21 @@ Meteor.methods({
     Tasks.remove({});
   },
 
+  'tasks.selecta'(listSelect){
+    
+    Tasks.find().forEach(function(lista) { 
 
-  'tasks.selecta'(){
-    Meteor.publish('tasks', function tasksPublication() {
-    return Tasks.find({
-      $or: [
-        { private: { $ne: true } },
-        { owner: this.userId },
-        { listID: this.listID },
-      ],
-    });
-  });
+      if(lista.listID == listSelect){
+        //console.log(lista.listID);
+        Tasks.update(lista, { $set: { rightList: true } });
+      } else{
+        //console.log("aint tha one");
+        Tasks.update(lista, { $set: { rightList: false } });
+      }
+
+      })
+    
   },
-
-
-
 
 
 });

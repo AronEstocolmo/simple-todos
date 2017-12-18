@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import { Template } from 'meteor/templating';
- 
+import { Template } from 'meteor/templating'; 
 import { Tasks } from '../api/tasks.js';
  
 import './task.html';
+
 
 
 Template.task.helpers({
@@ -14,16 +14,16 @@ Template.task.helpers({
  
 Template.task.events({
   'click .toggle-checked'() {
-    console.log("BUCHIIIIEZ!");
+    console.log("toggle-Checked");
     // Set the checked property to the opposite of its current value
     Meteor.call('tasks.setChecked', this._id, !this.checked);
   },
   'click .delete'() {
-    console.log("BUCHIIIIEZ2222");
+    console.log("Delete");
     Meteor.call('tasks.remove', this._id);
   },
   'click .toggle-private'() {
-    console.log("BUCHIIIIEZ33333");
+    console.log("toggle-private");
     Meteor.call('tasks.setPrivate', this._id, !this.private);
   },
   
